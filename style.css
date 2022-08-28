@@ -1,0 +1,99 @@
+/* Gray Color: #343a40 */
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: sans-serif;
+  /* height: 100vh; */
+  /* position: relative; */
+}
+
+header {
+  display: grid;
+  grid-template-columns: 4fr 1fr;
+
+  padding: 20px;
+}
+
+.logo {
+  font-size: 36px;
+  font-weight: 700;
+}
+
+button {
+  font-size: 18px;
+  color: #fff;
+  background-color: #1971c2;
+  border: none;
+  padding: 8px 16px;
+  justify-self: end;
+  border-radius: 18px;
+}
+
+.books {
+  background-color: #dfdfdf;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  /* height: 100%; */
+  padding: 20px;
+  position: relative;
+  /* width: 100%; */
+}
+
+.book {
+  background-color: #fff;
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+  justify-items: center;
+  height: 200px;
+}
+.hide {
+  display: none;
+}
+
+form {
+  position: absolute;
+  left: 40%;
+  top: 200px;
+
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 15px;
+
+  background-color: #fff;
+  padding: 20px;
+  width: 250px;
+  border-radius: 15px;
+  box-shadow: 0px 0px 0px 2000px rgba(0, 0, 0, 0.3);
+}
+
+form > h2 {
+  justify-self: center;
+  margin-bottom: 20px;
+}
+
+form > div {
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  gap: 5px;
+  align-items: end;
+}
+form > button {
+  justify-self: stretch;
+  margin-top: 25px;
+}
+
+input {
+  outline: none;
+  border: 0;
+  height: 25px;
+  background-color: #fff;
+  border: 1px solid #343a40;
+  border-radius: 12px;
+  padding-left: 5px;
+}
