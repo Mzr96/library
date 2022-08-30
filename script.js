@@ -119,3 +119,16 @@ add.addEventListener("click", function (e) {
     displayMyLibrary();
   }
 });
+
+document.addEventListener("click", function (e) {
+  console.log(`e.target is: ${e.target}`);
+  console.log(e.target.closest("form"));
+  if (
+    !inputForm.classList.contains("hide") &&
+    !e.target.closest("form") &&
+    !e.target.closest(".add-new-book")
+  ) {
+    console.log("here we go again");
+    inputForm.classList.add("hide");
+  }
+});
