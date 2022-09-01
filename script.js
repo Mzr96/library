@@ -56,6 +56,9 @@ function displayMyLibrary() {
     book.isRead
       ? (toggleRead.textContent = "Read")
       : (toggleRead.textContent = "Not Read");
+    book.isRead
+      ? toggleRead.classList.add("read")
+      : toggleRead.classList.add("unread");
     bookElement.appendChild(toggleRead);
 
     // remove button
@@ -132,3 +135,7 @@ document.addEventListener("click", function (e) {
     inputForm.classList.add("hide");
   }
 });
+
+addBookToLibrary("Kite Runner", "Khaled Hosseini", 371, true);
+s;
+displayMyLibrary();
