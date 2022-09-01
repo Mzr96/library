@@ -137,5 +137,4 @@ document.addEventListener("click", function (e) {
 });
 
 addBookToLibrary("Kite Runner", "Khaled Hosseini", 371, true);
-s;
 displayMyLibrary();
