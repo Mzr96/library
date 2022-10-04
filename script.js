@@ -1,108 +1,112 @@
 "use strict";
-
+let book;
 const add = document.querySelector(".add");
 const body = document.querySelector("body");
 const books = document.querySelector(".books");
 const inputForm = document.querySelector("form");
 const addNewBook = document.querySelector(".add-new-book");
-let myLibrary = [];
 
-function Book(title, author, pages, Isread) {
-  this.title = title;
-  this.author = author;
-  this.pages = pages;
-  this.isRead = Isread;
-  this.info = function () {
-    return `${title} by ${author}, ${this.pages} pages, ${
-      this.Isread ? "read" : "not read yet"
-    }.`;
-  };
+class Book {
+  constructor(title, author, pages, isRead) {
+    this.title = title;
+    this.author = author;
+    this.pages = pages;
+    this.isRead = isRead;
+  }
+
+  toggleReadStatus() {
+    this.isRead = !this.isRead;
+  }
 }
 
-// Change read-status Btn
-Book.prototype.changeReadeStatus = function () {
-  this.isRead ? (this.isRead = false) : (this.isRead = true);
-  displayMyLibrary();
+class Library {
+  constructor() {
+    this.books = [];
+  }
+  addBook(book) {
+    this.books.push(book);
+  }
+  removeBook(index) {
+    this.books.splice(index, 1);
+  }
+}
+
+const myLibrary = new Library();
+
+const creatBookCard = function (book) {
+  const bookCard = document.createElement("div");
+  bookCard.classList.add("book");
+  bookCard.setAttribute("data-index", `${myLibrary.books.indexOf(book)}`);
+  const title = document.createElement("p");
+  title.classList.add("title");
+  title.textContent = book.title;
+  bookCard.appendChild(title);
+
+  const author = document.createElement("p");
+  author.classList.add("author");
+  author.textContent = book.author;
+  bookCard.appendChild(author);
+
+  const pages = document.createElement("p");
+  pages.classList.add("pages");
+  pages.textContent = book.pages;
+  bookCard.appendChild(pages);
+
+  // read button
+  const toggleRead = document.createElement("button");
+  toggleRead.classList.add("read-status");
+  book.isRead
+    ? (toggleRead.textContent = "Read")
+    : (toggleRead.textContent = "Not Read");
+  book.isRead
+    ? toggleRead.classList.add("read")
+    : toggleRead.classList.add("unread");
+  bookCard.appendChild(toggleRead);
+
+  // remove button
+  // Create Element
+  const remove = document.createElement("button");
+  remove.classList.add("remove");
+  remove.textContent = "Remove";
+  bookCard.appendChild(remove);
+
+  books.appendChild(bookCard);
 };
 
-function addBookToLibrary(...bookDetails) {
-  myLibrary.push(new Book(...bookDetails));
-}
-
 function displayMyLibrary() {
-  books.textContent = "";
-  for (let book of myLibrary) {
-    const bookElement = document.createElement("div");
-    bookElement.classList.add("book");
-    bookElement.setAttribute("data-index", `${myLibrary.indexOf(book)}`);
-    const title = document.createElement("p");
-    title.classList.add("title");
-    title.textContent = book.title;
-    bookElement.appendChild(title);
-
-    const author = document.createElement("p");
-    author.classList.add("author");
-    author.textContent = book.author;
-    bookElement.appendChild(author);
-
-    const pages = document.createElement("p");
-    pages.classList.add("pages");
-    pages.textContent = book.pages;
-    bookElement.appendChild(pages);
-
-    // read button
-    const toggleRead = document.createElement("button");
-    toggleRead.classList.add("read-status");
-    book.isRead
-      ? (toggleRead.textContent = "Read")
-      : (toggleRead.textContent = "Not Read");
-    book.isRead
-      ? toggleRead.classList.add("read")
-      : toggleRead.classList.add("unread");
-    bookElement.appendChild(toggleRead);
-
-    // remove button
-    // Create Element
-    const remove = document.createElement("button");
-    remove.classList.add("remove");
-    remove.textContent = "Remove";
-    bookElement.appendChild(remove);
-
-    books.appendChild(bookElement);
+  books.innerHTML = "";
+  for (let book of myLibrary.books) {
+    creatBookCard(book);
   }
   execute();
 }
 
+// Add listener to remove and read-status buttons
 function execute() {
   // Remove
   const removeBtns = document.querySelectorAll(".remove");
   for (let btn of removeBtns) {
     btn.addEventListener("click", function (e) {
       const btnParent = e.target.parentElement;
-      console.log(Number(btnParent.dataset.index));
       const index = Number(btnParent.dataset.index);
-      myLibrary.splice(index, 1);
-      console.log(myLibrary);
+      myLibrary.removeBook(index);
       displayMyLibrary();
     });
   }
 
   // Change Read Status
   const toggleReadBtns = document.querySelectorAll(".read-status");
-  console.log(toggleReadBtns);
   for (let btn of toggleReadBtns) {
     btn.addEventListener("click", function (e) {
       const btnParent = e.target.parentElement;
-      console.log(Number(btnParent.dataset.index));
       const index = Number(btnParent.dataset.index);
-      myLibrary[index].changeReadeStatus();
+      myLibrary.books[index].toggleReadStatus();
       displayMyLibrary();
     });
   }
 }
 
 addNewBook.addEventListener("click", function () {
-  console.log("hi");
   inputForm.classList.toggle("hide");
 });
 
@@ -116,25 +120,27 @@ add.addEventListener("click", function (e) {
   const isRead = document.querySelector("#isread").checked;
 
   if (title !== "" && author !== "" && pages !== "") {
-    addBookToLibrary(title, author, pages, isRead);
+    book = new Book(title, author, pages, isRead);
+    myLibrary.addBook(book);
+    book = undefined;
     inputForm.reset();
     inputForm.classList.toggle("hide");
     displayMyLibrary();
   }
 });
 
+// Hide the form when click outside
 document.addEventListener("click", function (e) {
-  console.log(`e.target is: ${e.target}`);
-  console.log(e.target.closest("form"));
   if (
     !inputForm.classList.contains("hide") &&
     !e.target.closest("form") &&
     !e.target.closest(".add-new-book")
   ) {
-    console.log("here we go again");
     inputForm.classList.add("hide");
   }
 });
 
-addBookToLibrary("Kite Runner", "Khaled Hosseini", 371, true);
+// Sample book
+book = new Book("Kite Runner", "Khaled Hosseini", 371, true);
+myLibrary.addBook(book);
 displayMyLibrary();
